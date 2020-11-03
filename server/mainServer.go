@@ -20,7 +20,10 @@ func RunServer(hostRPCServer string, token string)  {
 	*	definir en este punto los Handlers correspondientes a las rutas
 	*	teniendo en cuante que cada handler solo admite un tipo de solicitud
 	*/
-		server.Handle("POST" ,"/", server.AddMiddleware(GetBalance, Log()))
+	server.Handle("POST" ,"/controllers/getbalance", server.AddMiddleware(GetBalance, Log()))
+	server.Handle("DELETE" ,"/controllers/deleteaccount", server.AddMiddleware(DeleteAccount, Log()))
+	server.Handle("PUT" ,"/controllers/modifyaccount", server.AddMiddleware(ModifyAccount, Log()))
+
 
 	log.Fatal(server.Listen())
 	
