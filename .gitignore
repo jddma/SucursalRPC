@@ -1,0 +1,9 @@
+*.png
+
+ServidorHTTPGolang
+
+model/
+
+*.json
+
+.idea/
