@@ -15,6 +15,50 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func AddAccount(w http.ResponseWriter, r *http.Request) {
+
+	//Decodificar el cuerpo de la solicitud con formato JSON
+	var data model.OperationData
+	err := json.NewDecoder(r.Body).Decode(&data)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	clientRPC.AddAccount(data.Document, data.Balance, data.Name)
+
+}
+
+//Controlador para condignar a una cuenta
+func Withdrawals(w http.ResponseWriter, r *http.Request) {
+
+	//Decodificar el cuerpo de la solicitud con formato JSON
+	var data model.OperationData
+	err := json.NewDecoder(r.Body).Decode(&data)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	clientRPC.Withdrawals(data.Document, data.MountToRemove)
+
+}
+
+//Controlador para condignar a una cuenta
+func AddMoney(w http.ResponseWriter, r *http.Request) {
+
+	//Decodificar el cuerpo de la solicitud con formato JSON
+	var data model.OperationData
+	err := json.NewDecoder(r.Body).Decode(&data)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	clientRPC.AddMoney(data.Document, data.MountToAdd)
+
+}
+
 //Controlador para modificar una cuenta
 func ModifyAccount(w http.ResponseWriter, r *http.Request) {
 
