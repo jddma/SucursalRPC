@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/static/js/panel_scripts.js"></script>
+    <link rel="stylesheet" href="/static/css/stylesPanel.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+
+  <div class="contact-section">
+
+    <h1>Contact Us</h1>
+    <div class="border"></div>
+    <form class="contact-form">
+      <input type="text" class="contact-form-text deactivate" id="document" placeholder="Documento">
+      <input type="number" class="contact-form-text deactivate" id="mount" placeholder="Monto">
+      <input type="text" class="contact-form-text deactivate" id="name" placeholder="Nombre">
+      <input type="text" class="contact-form-text deactivate" id="new-document" placeholder="Nuevo documento">
+
+      <div class="actions">
+
+        <div class="option">
+          <input type="radio" name="action" id="create">
+          <label for="create">Crear cuenta</label>
+        </div>
+        <br>
+        <div class="option">
+          <input type="radio" name="action" id="add">
+          <label for="create">Consignar</label>
+        </div>
+        <br>
+        <div class="option">
+          <input type="radio" name="action" id="withdrawals">
+          <label for="create">Retirar</label>
+        </div>
+        <br>
+        <div class="option">
+          <input type="radio" name="action" id="delete">
+          <label for="create">Eliminar cuenta</label>
+        </div>
+
+        <div class="option">
+          <input type="radio" name="action" id="edit">
+          <label for="create">Editar cuenta</label>
+        </div>
+      </div>
+
+      <input type="button" class="contact-form-btn" id="btn" value="Send">
+    </form>
+  </div>
+
+
+  </body>
+</html>

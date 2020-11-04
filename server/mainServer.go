@@ -2,6 +2,7 @@ package server
 
 import (
 	"log"
+
 )
 
 /**
@@ -32,6 +33,7 @@ func RunServer(hostRPCServer string, token string)  {
 
 	//Vistas
 	server.Handle("GET", "/", server.AddMiddleware(HandleRoot, Log()))
+	server.Handle("GET", "/panel", server.AddMiddleware(HandlePanel, CheckAuth("/"), Log()))
 
 	log.Fatal(server.Listen())
 	

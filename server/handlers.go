@@ -18,3 +18,12 @@ func HandleRoot(w http.ResponseWriter, r *http.Request) {
 	template.Execute(w, nil)
 
 }
+
+func HandlePanel(w http.ResponseWriter, r *http.Request) {
+
+	//Renderizar archivo html
+	templatePath:= path.Join("views/", "panel.html")
+	template, _ := template.ParseFiles(templatePath)
+	template.Execute(w, nil)
+
+}
