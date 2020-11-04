@@ -21,8 +21,11 @@ type Worker struct{
 	Password string
 }
 
+
+//Método para iniciar sesión
 func (w *Worker) Login(cookieHandler *securecookie.SecureCookie, wr http.ResponseWriter) bool {
 
+	//Realizar la consulta a la base de datos
 	var result bool
 
 	mgdUser := os.Getenv("MGD_USER")
@@ -53,11 +56,13 @@ func (w *Worker) Login(cookieHandler *securecookie.SecureCookie, wr http.Respons
 		return false
 	}
 
+	//Validar la contraseña de la contraseña
 	err = bcrypt.CompareHashAndPassword([]byte(queryResult["password"]), []byte(w.Password))
 	if err != nil {
 		result = false
 	} else {
 		result = true
+		w.Role = queryResult["role"]
 		auth.SetUserSession(w, cookieHandler, wr)
 	}
 

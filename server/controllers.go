@@ -9,6 +9,7 @@ import (
 
 var clientRPC *model.ClientRPC
 
+//
 func Login(w http.ResponseWriter, r *http.Request) {
 
 	var user model.Worker
