@@ -11,7 +11,19 @@ var clientRPC *model.ClientRPC
 
 func Login(w http.ResponseWriter, r *http.Request) {
 
+	var user model.Worker
 
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	if  user.Login(cookieHandler, w) {
+		fmt.Fprintf(w, "success")
+	} else {
+		fmt.Fprintf(w, "error")
+	}
 
 }
 

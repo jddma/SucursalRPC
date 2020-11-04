@@ -1,9 +1,8 @@
 package auth
 
 import (
-	"strconv"
-	"net/http"
 	"github.com/gorilla/securecookie"
+	"net/http"
 )
 
 /**
@@ -16,12 +15,12 @@ func SetUserSession(user UserSession, cookieHandler *securecookie.SecureCookie, 
 
 	//obtiente los datos necesarios del parametro user
 	indentifier := user.GetIdentifier()
-	id :=  user.GetId()
+	role := user.GetRole()
 	
 	//establece una estructura para almecenar los datos en la sesión
 	value := map[string]string{
 		"name": indentifier,
-		"id": strconv.Itoa(id),
+		"role": role,
 	}
 
 	//codificar la cookie
@@ -83,8 +82,8 @@ func GetSessionData(r *http.Request, cookieHandler *securecookie.SecureCookie) m
 */
 type UserSession interface{
 
-	GetId() int
 	GetIdentifier() string
 	GetPassword() string
+	GetRole() string
 
 }
