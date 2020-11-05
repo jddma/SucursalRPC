@@ -125,6 +125,15 @@ func GetBalance(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func getContext(data map[string]string) model.Worker {
+
+	return model.Worker{
+		Email: data["Name"],
+		Role: data["Role"],
+	}
+
+}
+
 //Método para iniciar el cliente RPC
 func startRPCConnection(host string, token string) {
 

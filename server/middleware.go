@@ -39,8 +39,8 @@ func CheckAuth(URLToRedirect string) Middleware {
 			redirect := false
 
 			sessionData := auth.GetSessionData(r, cookieHandler)
-			_, err1 := sessionData["name"]
-			_, err2 := sessionData["role"]
+			_, err1 := sessionData["Name"]
+			_, err2 := sessionData["Role"]
 
 			if (! err1) || (! err2){
 				redirect = true

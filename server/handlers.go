@@ -5,14 +5,18 @@ package server
 */
 
 import (
-	"net/http"
 	"html/template"
+	"net/http"
 	"path"
+
+	"../serverUtilities/auth"
 )
 
 func HandleRoot(w http.ResponseWriter, r *http.Request) {
 
 	//Renderizar archivo html
+
+
 	templatePath:= path.Join("views/", "index.html")
 	template, _ := template.ParseFiles(templatePath)
 	template.Execute(w, nil)
@@ -21,9 +25,11 @@ func HandleRoot(w http.ResponseWriter, r *http.Request) {
 
 func HandlePanel(w http.ResponseWriter, r *http.Request) {
 
+
+	context := auth.GetSessionData(r,cookieHandler)
 	//Renderizar archivo html
 	templatePath:= path.Join("views/", "panel.html")
 	template, _ := template.ParseFiles(templatePath)
-	template.Execute(w, nil)
+	template.Execute(w, context)
 
 }

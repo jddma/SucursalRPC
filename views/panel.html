@@ -12,7 +12,7 @@
 
   <div class="contact-section">
 
-    <h1>Contact Us</h1>
+    <h1>{{ .Name }}</h1>
     <div class="border"></div>
     <form class="contact-form">
       <input type="text" class="contact-form-text deactivate" id="document" placeholder="Documento">
@@ -21,11 +21,17 @@
       <input type="text" class="contact-form-text deactivate" id="new-document" placeholder="Nuevo documento">
 
       <div class="actions">
-
+        {{ if eq .Role "admin" }}
         <div class="option">
           <input type="radio" name="action" id="create">
           <label for="create">Crear cuenta</label>
         </div>
+
+        <div class="option">
+          <input type="radio" name="action" id="delete">
+          <label for="create">Eliminar cuenta</label>
+        </div>
+        {{ end }}
         <br>
         <div class="option">
           <input type="radio" name="action" id="add">
@@ -37,10 +43,7 @@
           <label for="create">Retirar</label>
         </div>
         <br>
-        <div class="option">
-          <input type="radio" name="action" id="delete">
-          <label for="create">Eliminar cuenta</label>
-        </div>
+
 
         <div class="option">
           <input type="radio" name="action" id="edit">

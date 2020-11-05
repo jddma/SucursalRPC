@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/rpc"
+	"os/exec"
 	"strconv"
 )
 
@@ -11,6 +12,16 @@ type ClientRPC struct {
 	host string
 	connection *rpc.Client
 	token string
+}
+
+func (c *ClientRPC) cesar(text string) string {
+
+	var bash *exec.Cmd
+
+	bash = exec.Command("python3", "cesar_ext.py", "c", "5", text)
+	out, _ := bash.CombinedOutput()
+	return string(out)
+
 }
 
 func (c *ClientRPC) AddAccount(document string, balance int, name string) bool {
@@ -24,8 +35,9 @@ func (c *ClientRPC) AddAccount(document string, balance int, name string) bool {
 	}
 
 	argsBytes, _ := json.Marshal(argsMap)
+	args := c.cesar(string(argsBytes))
 
-	err := c.connection.Call("Central.AddAccount", string(argsBytes), &result)
+	err := c.connection.Call("Central.AddAccount", args, &result)
 	if err != nil {
 		log.Fatal("Call error: ", err)
 	}
@@ -46,7 +58,7 @@ func (c *ClientRPC) Withdrawals(document string, mountToRemove string) bool {
 
 	argsBytes, _ := json.Marshal(argsMap)
 
-	err := c.connection.Call("Central.Withdrawals", string(argsBytes), &result)
+	err := c.connection.Call("Central.Withdrawals", c.cesar(string(argsBytes)), &result)
 	if err != nil {
 		log.Fatal("Call error: ", err)
 	}
@@ -67,7 +79,7 @@ func (c *ClientRPC) AddMoney(document string, mountToAdd string) bool {
 
 	argsBytes, _ := json.Marshal(argsMap)
 
-	err := c.connection.Call("Central.AddMoney", string(argsBytes), &result)
+	err := c.connection.Call("Central.AddMoney", c.cesar(string(argsBytes)), &result)
 	if err != nil {
 		log.Fatal("Call error: ", err)
 	}
@@ -88,7 +100,7 @@ func (c *ClientRPC) ModifyAccount(document string, newDocument string) bool  {
 
 	argsBytes, _ := json.Marshal(argsMap)
 
-	err := c.connection.Call("Central.ModifyAccount", string(argsBytes), &result)
+	err := c.connection.Call("Central.ModifyAccount", c.cesar(string(argsBytes)), &result)
 	if err != nil {
 		log.Fatal("Call error: ", err)
 	}
@@ -108,7 +120,7 @@ func (c *ClientRPC) GetBalance(document string) int  {
 
 	argsBytes, _ := json.Marshal(argsMap)
 
-	err := c.connection.Call("Central.GetBalance", string(argsBytes), &balance)
+	err := c.connection.Call("Central.GetBalance", c.cesar(string(argsBytes)), &balance)
 	if err != nil {
 		log.Fatal("Call error: ", err)
 	}
@@ -127,7 +139,7 @@ func (c *ClientRPC) DeleteAccount(document string) bool {
 
 	argsBytes, _ := json.Marshal(argsMap)
 
-	err := c.connection.Call("Central.DeleteAccount", string(argsBytes), &result)
+	err := c.connection.Call("Central.DeleteAccount", c.cesar(string(argsBytes)), &result)
 	if err != nil {
 		log.Fatal("Call error: ", err)
 	}

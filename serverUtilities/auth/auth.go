@@ -19,8 +19,8 @@ func SetUserSession(user UserSession, cookieHandler *securecookie.SecureCookie, 
 	
 	//establece una estructura para almecenar los datos en la sesión
 	value := map[string]string{
-		"name": indentifier,
-		"role": role,
+		"Name": indentifier,
+		"Role": role,
 	}
 
 	//codificar la cookie
