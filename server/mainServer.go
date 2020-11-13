@@ -1,13 +1,26 @@
 package server
 
 import (
+	"fmt"
 	"log"
 
+	"../serverUtilities/auth"
 )
 
 /**
 *	la esta función permite iniciar la ejecución del servidor
 */
+
+func userOptions() {
+
+	for {
+		fmt.Print("Presiona enter para registrar un nuevo ATM")
+		fmt.Scanln()
+		auth.RegisterATM()
+	}
+
+}
+
 func RunServer(hostRPCServer string, token string)  {
 
 	startRPCConnection(hostRPCServer, token)
@@ -34,6 +47,8 @@ func RunServer(hostRPCServer string, token string)  {
 	//Vistas
 	server.Handle("GET", "/", server.AddMiddleware(HandleRoot, Log()))
 	server.Handle("GET", "/panel", server.AddMiddleware(HandlePanel, CheckAuth("/"), Log()))
+
+	go userOptions()
 
 	log.Fatal(server.Listen())
 	

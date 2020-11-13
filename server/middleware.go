@@ -1,11 +1,13 @@
 package server
 
 import (
-	"log"
-	"time"
-	"fmt"
-	"net/http"
 	"../serverUtilities/auth"
+	"context"
+	"fmt"
+	"go.mongodb.org/mongo-driver/bson"
+	"log"
+	"net/http"
+	"time"
 )
 
 /**
@@ -30,6 +32,11 @@ import (
 *	en caso de que no lo este sera redireccinado a la ruta que sea enviada
 *	como parametro
 */
+
+type clients struct {
+	Token string
+	Type string
+}
 func CheckAuth(URLToRedirect string) Middleware {
 
 	return func(f http.HandlerFunc) http.HandlerFunc {
@@ -46,9 +53,24 @@ func CheckAuth(URLToRedirect string) Middleware {
 				redirect = true
 			}
 
-			if redirect{
-				http.Redirect(w, r, URLToRedirect, 401)
-				return
+      		if redirect{
+
+				connection := auth.OpenConnection()
+				jwt := r.Header["Authorization"]
+				if jwt == nil {
+					http.Redirect(w, r, URLToRedirect, 401)
+					return
+				}
+				filter := bson.D{{
+					"token", jwt[0],
+				}}
+				collection := connection.Database("branch").Collection("clients")
+				var queryResult clients
+				err := collection.FindOne(context.TODO(), filter).Decode(&queryResult)
+				if err != nil {
+					http.Redirect(w, r, URLToRedirect, 401)
+					return
+				}
 			}
 			f(w, r)
 		}

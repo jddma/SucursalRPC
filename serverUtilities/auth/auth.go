@@ -1,8 +1,16 @@
 package auth
 
 import (
+	"context"
+	"fmt"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/securecookie"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	"log"
 	"net/http"
+	"os"
+	"time"
 )
 
 /**
@@ -11,6 +19,57 @@ import (
 *	si el proceso fue correctamente ejecutado false en caso
 *	contrario
 */
+
+func OpenConnection() *mongo.Client {
+
+	var result *mongo.Client
+
+	mgdUser := os.Getenv("MGD_USER")
+	mgdPassword := os.Getenv("MGD_PASSWORD")
+	mgdHost := os.Getenv("MGD_HOST")
+
+	uri := "mongodb://" + mgdUser + ":" + mgdPassword + "@" + mgdHost + ":27017"
+
+	var err error
+	result, err = mongo.NewClient(options.Client().ApplyURI(uri))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	err = result .Connect(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return result
+
+}
+
+func RegisterATM()  {
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"type": "atm",
+	})
+	tokenString, _ := token.SignedString([]byte("KEY"))
+
+	newATM := map[string]string{
+		"type": "atm",
+		"token": tokenString,
+	}
+
+	client := OpenConnection()
+	//Persistir los datos en la base de datos
+	collection := client.Database("branch").Collection("clients")
+	_, err := collection.InsertOne(context.TODO(), newATM)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("TOKEN: ", tokenString)
+
+}
+
 func SetUserSession(user UserSession, cookieHandler *securecookie.SecureCookie, w http.ResponseWriter) bool {
 
 	//obtiente los datos necesarios del parametro user
